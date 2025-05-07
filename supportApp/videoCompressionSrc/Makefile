@@ -20,7 +20,12 @@ ifeq ($(WITH_VC),YES)
     
     #SRC_DIRS += $(VC)/video_compression_tools
     #SRC_DIRS += $(VC)/video_compression_tools/src
+    #USR_INCLUDES += -I/usr/include/ffmpeg
+    USR_INCLUDES += -I/home/controls/misc/ffmpeg/ffmpeg_build/include
+    USR_INCLUDES += -I/home/controls/misc/ffmpeg/ffmpeg_sources/ffmpeg
     USR_INCLUDES += -I/usr/include/ffmpeg
+    USR_INCLUDES += -L/home/controls/misc/ffmpeg/ffmpeg_build/lib
+    USR_LDFLAGS += -L/home/controls/misc/ffmpeg/ffmpeg_build/lib
     #INC += packet_io.h
     INC += streaming_vc.h
     #INC += pgm.h
