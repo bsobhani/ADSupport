@@ -31,6 +31,7 @@ AVCodecContext* init_av_decoder_context(){
 }
 
 AVCodecContext* init_av_encoder_context(int width, int height){
+	printf("initializing av context\n");
 	AVCodecContext *c= NULL;
 	#if LIBAVCODEC_VERSION_MAJOR<=57 
 		avcodec_register_all();
@@ -61,6 +62,7 @@ AVCodecContext* init_av_encoder_context(int width, int height){
 		fprintf(stderr, "Could not open codec: %s\n", av_err2str(ret));
 		exit(1);
 	}
+	printf("successfully initialized av context\n");
 	return c;
 }
 
@@ -174,10 +176,14 @@ void set_param_int_(CodecContext* c, int* p_param, int param_val){
 		printf("Error: null context\n");
 		return;
 	}
+	printf("set param codeccontext %d\n", c);
 	AVCodecContext* c_c = c->c_c;
 	//maybe lock/unlock can go in reset function instead of every setter function?
 	pthread_mutex_t* mutex = &(c->mutex);
+	printf("mutex addr setter %d\n", mutex);
+	printf("set param locking mutex\n");
 	pthread_mutex_lock(mutex);
+	printf("set param finished locking mutex\n");
 	if(c_c==0){
 		printf("Error: c_c is NULL. Could not set param to %d\n", param_val);
 		pthread_mutex_unlock(mutex);
@@ -186,7 +192,9 @@ void set_param_int_(CodecContext* c, int* p_param, int param_val){
 	//c_c->gop_size = gop_size;
 	*p_param = param_val;
 	reset_encoder_context(c);
+	printf("set param  unlocking mutex\n");
 	pthread_mutex_unlock(mutex);
+	printf("set param finished unlocking mutex\n");
 }
 void set_gop_size_(CodecContext* c, int gop_size){
 	set_param_int_(c, &(c->c_c->gop_size), gop_size);

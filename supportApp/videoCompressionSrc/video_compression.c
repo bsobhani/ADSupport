@@ -15,7 +15,8 @@ int H264_compress(void** p_vc_c, const char* source, char* dest, int x_size, int
 {
 	CodecContext** p_c = (CodecContext**) p_vc_c;
 	if(*p_c==0) *p_c = init_encoder_context(x_size, y_size);
-	int num_bytes = compress_buffer(*p_c, source, x_size, y_size, dest);
+	//int num_bytes = compress_buffer(*p_c, source, x_size, y_size, dest);
+	int num_bytes = compress_buffer(p_c, source, x_size, y_size, dest);
 	return num_bytes;
 }
 
